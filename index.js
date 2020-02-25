@@ -9,7 +9,7 @@ const { logErrors, errorHandler, wrapErrors } = require('./utils/middleware/erro
 const notFoundHandler = require('./utils/middleware/notfoundHandler');
 
 
-const mongo_url = `mongodb+srv://${config.mongodb.user}:${config.mongodb.password}@cluster0-iw489.mongodb.net/${config.mongodb.dbname}`;
+const mongo_url = `mongodb+srv://${config.mongodb.user}:${config.mongodb.password}@${config.mongodb.host}/${config.mongodb.dbname}`;
 connect(mongo_url);
 
 app.use(bodyParser.json());
