@@ -24,7 +24,7 @@ class MongoDB {
         return MongoDB.connection
     }
 
-    async list(model, filter) {   
+    async list(model, filter = {}) {   
         return await model.find(filter);
     }
 
@@ -33,13 +33,13 @@ class MongoDB {
         return find;
     }
 
-    async insert(Model, user) { 
-        const insert = new Model(user);
-        return await insert.save(user); 
+    async insert(Model, data) { 
+        const insert = new Model(data);
+        return await insert.save(); 
     }
 
-    async findOne(model, user) {
-        const result = await model.findOne(user);
+    async findOne(model, data) {
+        const result = await model.findOne(data);
         return result;
     }
 }
