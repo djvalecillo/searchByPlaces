@@ -2,19 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const { config } = require('./config/index');
-const { connect } = require('./store/mongodb');
 const userRoutes = require('./api/components/users/routes');
 const placesRoutes = require('./api/components/places/routes');
 const { logErrors, errorHandler, wrapErrors } = require('./utils/middleware/errorHandlers');
 const notFoundHandler = require('./utils/middleware/notfoundHandler');
 
-
-const mongo_url = `mongodb+srv://${config.mongodb.user}:${config.mongodb.password}@${config.mongodb.host}/${config.mongodb.dbname}`;
-connect(mongo_url);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+//routes
 userRoutes(app);
 placesRoutes(app);
 

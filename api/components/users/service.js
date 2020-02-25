@@ -1,38 +1,40 @@
 const Model = require('./model');
+const MongoDB = require('../../../store/mongodb');
 
 
-async function list(user) {
-    let filter = {};
-    if(user !== null) {
-        filter = { name: user}
+class UserSevice {
+    constructor() {
+        this.db = new MongoDB();
     }
 
-    return await Model.find(filter);
-}
+    async listUsers(user) {
+        let filter = {};
+        if(user !== null) {
+            filter = user;
+        }
+    
+        return await this.db.list(Model, filter);
+    }
 
-async function get(id) {
-    const findMessage = await Model.findById(id);
-    return findMessage;
-}
+    async getUser(id) {
+        const findUser = await this.db.getOne(Model, id);
+        return findUser;
+    }
 
-async function insert(user) {
-    try {
-        const newUser = new Model(user);
-        return await newUser.save(user);
-    } catch (error) {
-        return Promise.reject(error);
+    async insertUser(user) {
+        try {
+            const newUser = await this.db.insert(Model, user);
+            return newUser;
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async findUser(user) {
+        const result = await this.db.findOne(Model, user);
+        return result;
     }
 }
 
-async function query(user) {
-    const result = await Model.findOne(user);
-    return result;
-}
-
-module.exports = {
-    list,
-    get,
-    insert,
-    query
-}
+module.exports = UserSevice;
 
