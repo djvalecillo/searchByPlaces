@@ -7,7 +7,7 @@ function placesRoutes(app) {
     const router = express.Router();
     app.use('/api/places', router);
 
-    router.get('/', secure('search'), function(req, res) {
+    router.get('/', secure('search'), function(req, res, next) {
         const city = req.query.city || null;
         const type = req.query.type || null;
 
@@ -15,9 +15,7 @@ function placesRoutes(app) {
             .then(places => {
                 response.success(req, res, places, 200);
             })
-            .catch(err => {
-                response.error(req, res, err, 200);
-            });
+            .catch(next);
     });
 }
 

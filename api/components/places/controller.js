@@ -9,13 +9,7 @@ async function searchPlaces(city, type) {
 
     const searchtype = type || DEFAULT_TYPE;
     const service = new SearchPlacesService();
-    await service.nearBySearch(city, searchtype)
-        .then(data => {
-            Promise.resolve(data);
-        })
-        .catch(err => {
-            Promise.reject(err);
-        });
+    await service.nearBySearch(city, searchtype);
 }
 
 module.exports = {
