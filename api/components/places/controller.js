@@ -1,4 +1,4 @@
-const service = require('./service');
+const SearchPlacesService = require('./service');
 const DEFAULT_TYPE = 'restaurant';
 
 
@@ -8,9 +8,14 @@ async function searchPlaces(city, type) {
     }
 
     const searchtype = type || DEFAULT_TYPE;
-
-    const places = await service.search(city, searchtype);
-    return places;
+    const service = new SearchPlacesService();
+    await service.nearBySearch(city, searchtype)
+        .then(data => {
+            Promise.resolve(data);
+        })
+        .catch(err => {
+            Promise.reject(err);
+        });
 }
 
 module.exports = {

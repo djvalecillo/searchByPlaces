@@ -7,9 +7,9 @@ async function connect(url) {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(() => {
-        console.log('[DB]: base de datos conectada con exito');
+        console.log('[DB]: base de datos conectada con exito'); // eslint-disable-line
     }).catch(err => {
-        console.log('[DB]: ' + err);
+        console.log('[DB]: ' + err); // eslint-disable-line
     });
 }
 

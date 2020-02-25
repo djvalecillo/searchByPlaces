@@ -11,7 +11,7 @@ const config = {
     jwt: {
         secret: process.env.SECRET ||'stringsecret'
     },
-    google_places: {
+    google_maps: {
         key: process.env.GOOGLE_PLACES_API_KEY || "AIzaSyC_GiC73ihVMnYWqXJV1ReVeauQToZGZmk",
         format: process.env.GOOGLE_PLACES_OUTPUT_FORMAT || "json",
     }
