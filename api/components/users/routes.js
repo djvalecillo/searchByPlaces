@@ -1,6 +1,7 @@
 const express = require('express')
 const response = require('../../../utils/response');
 const Controller = require('./controller');
+const secure = require('../../../utils/middleware/secure'); 
 const validationHandler = require('../../../utils/middleware/validationHandlers');
 const {
     userIdSchema,
@@ -14,7 +15,7 @@ function usersRoutes(app) {
     const router = express.Router();
     app.use('/api/users', router);
 
-    router.get('/', function(req, res, next) {
+    router.get('/', secure('logged'), function(req, res, next) {
         const filter = req.query || null;
         UserController.listUsers(filter)
             .then(users => {
@@ -23,7 +24,7 @@ function usersRoutes(app) {
             .catch(next);
     });
 
-    router.get('/:id', validationHandler({ id: userIdSchema }, 'params'), function(req, res, next) {
+    router.get('/:id', secure('logged'), validationHandler({ id: userIdSchema }, 'params'), function(req, res, next) {
         const id = req.params.id || null;
         UserController.getUser(id)
             .then(user => {

@@ -1,12 +1,14 @@
 const express = require('express')
 const response = require('../../../utils/response');
 const Controller = require('./controller');
+const secure = require('../../../utils/middleware/secure');
 
 const ActivityController = new Controller();
 
 function activityRoutes(app) {
     const router = express.Router();
     app.use('/api/activities', router);
+    router.use(secure('logged'));
 
     router.get('/', function(req, res, next) {
         const filter = req.query || null;
