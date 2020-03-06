@@ -2,19 +2,30 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const { config } = require('./config/index');
-const { connect } = require('./store/mongodb');
 const userRoutes = require('./api/components/users/routes');
 const placesRoutes = require('./api/components/places/routes');
-
-const mongo_url = `mongodb+srv://${config.mongodb.user}:${config.mongodb.password}@cluster0-iw489.mongodb.net/${config.mongodb.dbname}`;
-connect(mongo_url);
+const activitiesRoutes = require('./api/components/activities/routes');
+const { logErrors, errorHandler, wrapErrors } = require('./utils/middleware/errorHandlers');
+const notFoundHandler = require('./utils/middleware/notfoundHandler');
+const activityLogger = require('./utils/middleware/activityLogger');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(activityLogger);
 
+//routes
 userRoutes(app);
 placesRoutes(app);
+activitiesRoutes(app);
+
+//handle 404
+app.use(notFoundHandler);
+
+//errors middleware
+app.use(logErrors);
+app.use(wrapErrors);
+app.use(errorHandler);
 
 app.listen(config.port, function() {
-    console.log(`Listening http://localhost:${config.port}`);
+    console.log(`Listening http://localhost:${config.port}`); // eslint-disable-line
 });

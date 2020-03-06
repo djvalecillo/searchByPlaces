@@ -1,51 +1,50 @@
 const bcrypt = require('bcrypt');
 const auth = require('../../../auth');
-const service = require('./service');
+const Service = require('./service');
 
-
-function listUsers() {
-    return service.list();
-}
-
-function getUser(id) {
-    if (!id){ 
-        Promise.reject();
-        return false;
+class UserController {
+    constructor() {
+        this.service = new Service();
     }
 
-    return service.get(id);
-}
-
-async function insertUser(data) {
-    const pass = await bcrypt.hash(data.password, 5);
-    const user = {
-        id: null,
-        username: data.username,
-        password: pass,
-        email: data.email,
-        created: new Date()
-    };
-    const result = await service.insert(user);
-    return result;
-}
-
-async function login(username, password) {
-    const data = await service.query({username: username});
+    listUsers(filter) {
+        return this.service.listUsers(filter);
+    }
     
-    return bcrypt.compare(password, data.password)
-        .then(success => {
-            if(success) {
-                return auth.sign(data.password)
-            } else {
-                throw new Error('Invalid Data')
-            }
-        })
+    getUser(id) {
+        if (!id){ 
+            Promise.reject();
+            return false;
+        }
+        return this.service.getUser(id);
+    }
+    
+    async insertUser(data) {
+        const pass = await bcrypt.hash(data.password, 5);
+        const user = {
+            id: null,
+            username: data.username,
+            password: pass,
+            email: data.email,
+            created: new Date()
+        };
+        const result = await this.service.insertUser(user);
+        return result;
+    }
+    
+    async login(username, password) {
+        const data = await this.service.findUser({username: username});
+        
+        return bcrypt.compare(password, data.password)
+            .then(success => {
+                if(success) {
+                    return auth.sign(data.password)
+                } else {
+                    throw new Error('Invalid Data')
+                }
+            })
+    }
 }
 
-module.exports = {
-    listUsers,
-    getUser,
-    insertUser,
-    login,
-};
+module.exports = UserController;
  
