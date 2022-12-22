@@ -27,7 +27,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "is-valid-geo-coordinates": "^1.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.2",
     "node-follow-redirects": "^1.0.1"
   },
